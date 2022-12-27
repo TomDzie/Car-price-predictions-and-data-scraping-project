@@ -96,3 +96,7 @@ class Scraping():
                     'Skrzynia biegow': values[11], 'Naped': values[12], 'Liczba drzwi': values[13], 'Kolor': values[14],
                     'Bezwypadkowy': values[15], 'id': values[16]}
         return dict_values
+
+    @staticmethod
+    def useless():
+        print('pies')
