@@ -1,10 +1,12 @@
 import csv
-
+from datetime import date
 daily_data_list = []
 daily_id = []
-
-with open('C:\\Users\\tom19\\VScode_Projects\\OTOmoto_project\\data\\data.csv', 'r', newline='') as daily:
-    with open('C:\\Users\\tom19\\VScode_Projects\\OTOmoto_project\\data\\database.csv', 'r+', newline='') as database:
+model_name = 'BMW_f20_seria1'
+today = date.today()
+folder = 'BMW_f20_seria1'
+with open(f'C:\\Users\\tom19\\VScode_Projects\\OTOmoto_project\\data\\{folder}\\{model_name}_{today}.csv', 'r', newline='') as daily:
+    with open(f'C:\\Users\\tom19\\VScode_Projects\\OTOmoto_project\\data\\{folder}\\database_{folder}.csv', 'r+', newline='') as database:
 
         daily_reader = csv.reader(daily)
         database_reader = csv.reader(database)

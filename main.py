@@ -18,6 +18,7 @@ with open(f'C:\\Users\\tom19\VScode_Projects\\OTOmoto_project\\data\\{folder}\\{
             for index, i in enumerate(mercedes.http_id[1]):
                 a = mercedes.scrap_inner_info(i, mercedes.http_id[0][index])
                 if a == None:
+                    print('brak')
                     continue
                 print(f'{round((index+1)/len(mercedes.http_id[1])*100, 2)}%') # scraping progress %
                 writer.writerow(mercedes.split_data(a[0], a[1])) 
