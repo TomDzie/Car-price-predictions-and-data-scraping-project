@@ -49,7 +49,10 @@ class Scraping():
     def scrap_inner_info(ref_link, id):
         label_list = []
         value_list = []
-        offers_page = requests.get(ref_link).text
+        offers_p = requests.get(ref_link, allow_redirects=False)
+        if offers_p.status_code == 301:
+            return None                                          #if page doesnt work
+        offers_page = offers_p.text
         soup_offers_page = BeautifulSoup(offers_page, 'lxml')
         if len(soup_offers_page.find_all(class_ = 'offer-price changeFinanceLinkOrder')) == 0:
             return None

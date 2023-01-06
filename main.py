@@ -20,5 +20,6 @@ with open(f'C:\\Users\\tom19\VScode_Projects\\OTOmoto_project\\data\\{folder}\\{
                 if a == None:
                     print('brak')
                     continue
-                print(f'{round((index+1)/len(mercedes.http_id[1])*100, 2)}%') # scraping progress %
+                print(f'{round((index+1)/len(mercedes.http_id[1])*100, 2)}%----------{index}') # scraping progress %
                 writer.writerow(mercedes.split_data(a[0], a[1])) 
+                #https://www.otomoto.pl/oferta/bmw-seria-1-bardzo-ladna-salon-polska-oryginal-lakier-bez-wkladu-ID6F9DR1.html 64
