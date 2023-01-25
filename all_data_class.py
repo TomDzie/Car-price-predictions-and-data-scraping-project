@@ -1,22 +1,25 @@
 import requests
 from bs4 import BeautifulSoup
 import re
+import csv
+from datetime import date
 
 class Scraping():
     def __init__(self, http, model, http_extention):
+
         self.http = http
         self.model = model
         self.http_extention = http_extention
-        self.http_id = [[], []]           #[0] -> id [1] -> url
+        self.http_id = [[], []]                                                            #[0] -> id [1] -> url
         self.number_of_pages = 0
     
 
-    def get_href(self):                #function scraping all offer's urls and IDs
+    def get_href(self):                                                                    #function scraping all offer's urls and IDs
         a = 0
         
         offers_page = requests.get(self.http).text                                         #requests page you chose
         soup_offers_page = BeautifulSoup(offers_page, 'lxml')                              #soup main offer page
-        self.number_of_pages = soup_offers_page.find_all(class_='ooa-xdlax9 ekxs86z0')     #gets number of pages to loop
+        self.number_of_pages = soup_offers_page.find_all(class_='ooa-xdlax9 eesa4ha0')     #gets number of pages to loop
         http1 = self.http                                                                  #copy url
         if len(self.number_of_pages) == 0:                                                 #if there is one page only
             self.number_of_pages = 1
@@ -74,7 +77,7 @@ class Scraping():
     def split_data(label_list1, value_list1):                                #preparing data for csv
         values = []
         csv_title_list = ['Oferta od', 'Marka pojazdu', 'Price',  'Wersja', 'Model pojazdu', 'Generacja', 'Rok produkcji', 'Przebieg', 'Pojemnosc skokowa',
-                            'Rodzaj paliwa', 'Moc', 'Skrzynia biegow', 'Naped', 'Liczba drzwi', 'Kolor', 'Bezwypadkowy', 'id']    #csv all columns
+                            'Rodzaj paliwa', 'Moc', 'Skrzynia biegow', 'Naped', 'Liczba drzwi', 'Kolor', 'Bezwypadkowy','Uszkodzony', 'id']    #csv all columns
         for i, parameter in enumerate(csv_title_list):                       #go throuhgt columns 
             if parameter in label_list1:                                     #if offer has exact parameter saves it 
                 value = value_list1[label_list1.index(parameter)]
@@ -86,12 +89,39 @@ class Scraping():
                 'Ż', 'Z').replace('Ó', 'O').replace('Ś', 'S').replace('Ć', 'C').replace('Ź', 'z').replace('ę','e').replace(
                 'Ę', 'E').replace('ą', 'a').replace('Ą', 'A').replace('ń', '').replace('Ń', 'N'))        #replacing all polish leeters not supported by csv            
 
-        f1 = lambda x: int(re.sub('[^0-9]','', x))                                                       #replace all non numeric characters 
+        f1 = lambda x: int(re.sub('[^0-9]','', x))                                                       #replace all non numeric characters
+        f2 = lambda x:  x[:-1] if len(x) > 1 else '0'                                                    #replace last character
 
         dict_values = {'Oferta od': values[0], 'Marka pojazdu': values[1],'Price': f1(values[2]), 'Wersja': values[3], 'Model pojazdu': values[4],
                     'Generacja': values[5],
-                    'Rok produkcji': f1(values[6]), 'Przebieg': f1(values[7]), 'Pojemnosc skokowa': f1(values[8]),
-                    'Rodzaj paliwa': values[9], 'Moc': values[10],
+                    'Rok produkcji': f1(values[6]), 'Przebieg': f1(values[7]), 'Pojemnosc skokowa': f1(f2(values[8])),
+                    'Rodzaj paliwa': values[9], 'Moc': f1(values[10]),
                     'Skrzynia biegow': values[11], 'Naped': values[12], 'Liczba drzwi': f1(values[13]), 'Kolor': values[14],
-                    'Bezwypadkowy': values[15], 'id': values[16]}                                       #ready dict
+                    'Bezwypadkowy': values[15],'Uszkodzony': values[16], 'id': values[17]}                                       #ready dict
         return dict_values
+
+class start_scraping:
+
+    def __init__(self, model_name: str, directory: str, url: str) -> None:
+        self.directory = directory
+        self.model_name = model_name
+        self.url = url
+        pass
+
+    def start(self):
+        today = date.today()
+        with open(f'{self.directory}\\{self.model_name}_{today}.csv', 'w', newline='') as cs_f:
+            csv_title_list = ['Oferta od', 'Marka pojazdu', 'Price',  'Wersja', 'Model pojazdu', 'Generacja', 'Rok produkcji', 'Przebieg', 'Pojemnosc skokowa',
+                            'Rodzaj paliwa', 'Moc', 'Skrzynia biegow', 'Naped', 'Liczba drzwi', 'Kolor', 'Bezwypadkowy','Uszkodzony', 'id']
+            writer = csv.DictWriter(cs_f, fieldnames=csv_title_list)
+            writer.writeheader()
+
+            car = Scraping(f'{self.url}', f'{self.model_name}', '&')
+            car.get_href()            
+            for index, i in enumerate(car.http_id[1]):
+                a = car.scrap_inner_info(i, car.http_id[0][index])
+                if a == None:
+                    print('brak')
+                    continue
+                print(f'{round((index+1)/len(car.http_id[1])*100, 2)}%') # scraping progress %
+                writer.writerow(car.split_data(a[0], a[1])) 

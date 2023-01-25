@@ -5,7 +5,8 @@ daily_id = []
 model_name = 'BMW_f20_seria1'
 today = date.today()
 folder = 'BMW_f20_seria1'
-with open(f'C:\\Users\\tom19\\VScode_Projects\\OTOmoto_project\\data\\{folder}\\{model_name}_{today}.csv', 'r', newline='') as daily:
+directory = '2023-01-24'
+with open(f'C:\\Users\\tom19\\VScode_Projects\\OTOmoto_project\\data\\{folder}\\{model_name}_{directory}.csv', 'r', newline='') as daily:
     with open(f'C:\\Users\\tom19\\VScode_Projects\\OTOmoto_project\\data\\{folder}\\database_{folder}.csv', 'r+', newline='') as database:
 
         daily_reader = csv.reader(daily)
