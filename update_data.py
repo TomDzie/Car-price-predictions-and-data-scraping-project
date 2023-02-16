@@ -85,3 +85,7 @@ def update_database(db_directory, directory_directory):
 
 def add_directory():
     pass
+
+add_column('C:\\Users\\tom19\VScode_Projects\\OTOmoto_project\\data\\BMW_f20_seria1\\database_BMW_f20_seria1.csv', "Data", 3 , '2023.02.14')
+
+# delete_column('C:\\Users\\tom19\VScode_Projects\\OTOmoto_project\\data\\BMW_f20_seria1\\database_BMW_f20_seria1.csv', "Data")
