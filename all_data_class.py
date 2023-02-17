@@ -4,7 +4,6 @@ import re
 import csv
 from datetime import date
 import http.client
-
 http.client._MAXHEADERS = 1000
 import sqlite3 as sq
 
@@ -149,9 +148,10 @@ def data_to_dict(label_list1, value_list1, csv_title_list):  # preparing data fo
 
 
 class scrape:
-    def __init__(self, model_name: str, directory: str, url: str):
+    def __init__(self, model_name: str, directory: str, url: str, http_extension: str):
         self.directory = directory
         self.model_name = model_name
+        self.http_extension = http_extension
         self.url = url
         pass
 
@@ -184,7 +184,7 @@ class scrape:
             writer = csv.DictWriter(cs_f, fieldnames=csv_title_list)
             writer.writeheader()
 
-            car = Scraping(f"{self.url}", "&")
+            car = Scraping(f"{self.url}", self.http_extension)
             car.get_href()
             for index, i in enumerate(car.http_id[1]):
                 a = car.scrap_inner_info(i, car.http_id[0][index])
@@ -192,9 +192,7 @@ class scrape:
                     print("brak")
                     continue
 
-                print(
-                    f"{round((index+1)/len(car.http_id[1])*100, 2)}%"
-                )  # scraping progress %
+                print(f"{round((index+1)/len(car.http_id[1])*100, 2)}%")  # scraping progress %
                 writer.writerow(data_to_dict(a[0], a[1], csv_title_list))
 
     def SQlite(self, table_name):
@@ -220,10 +218,17 @@ class scrape:
             "id",
         ]
 
-        car = Scraping(f"{self.url}", "&")
+        car = Scraping(f"{self.url}", self.http_extension)
         car.get_href()
         con = sq.connect(f"{self.directory}")
         for index, i in enumerate(car.http_id[1]):
+            cur = con.cursor()
+            cur.execute(
+                f"""SELECT COUNT(*) FROM {table_name} WHERE id = {car.http_id[0][index]}"""
+            )
+
+            if cur.fetchall()[0][0] >= 1:
+                continue
             a = car.scrap_inner_info(i, car.http_id[0][index])
             if a == None:
                 print("brak")
@@ -231,7 +236,6 @@ class scrape:
 
             data = data_to_dict(a[0], a[1], csv_title_list)
 
-            cur = con.cursor()
             cur.execute(
                 f"""INSERT OR IGNORE INTO {table_name} VALUES
                             {tuple(data.values())}"""
