@@ -1,4 +1,13 @@
-## otomoto WebScraping
-## This is code made for scraping cars data from OTOmoto
-Helps collecting usefull data about cars in Poland and conclude
-about market changes or parameters relationships
+# Scraping data and predicting car prices out of them  
+1. [ Description. ](#desc)
+2. [ Usage tips. ](#usage)
+
+<a name="desc"></a>
+## 1. Description
+
+sometext
+
+<a name="usage"></a>
+## 2. Usage tips
+
+sometext
