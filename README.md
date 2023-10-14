@@ -3,6 +3,10 @@
 2. [ Scraping data. ](#coll)
 3. [ Checking requests. ](#prob)
 4. [ Price predicting process. ](#usage)
+5. [ PCA transformation](#usage)
+6. [ Goodness of fit and other informations](#rsqu)
+7. [ results](#res)
+8. 
 
 <a name="desc"></a>  
 ## 1. Description  
@@ -29,4 +33,9 @@ Other problem is loading unexpected html, I mean different than i used to see, r
 
 <a name="prob"></a>  
 ## 3. Price predicting process   
-
+Using specified by user car parameters I generate SQL query and get ready to use data. Than took these steps:    
+Spliting for training and testing data, with propotions 4:1, I found this proportion working pretty good, but when dataset was pretty small I tweaked it a little.
+Standardization, Data is commonly rescaled to fall between -3 and 3, but actualy its mean is 0 and standard deviation 1. I had to perform standardization because of later PCA reduction which is sensitive for outlining data.   
+First Linear Regression, for finding outliners, by performing variance realtive to this regressions and deleting records with variance higher than set.  
+Second Linear Regresion this is the regression I use to predict Price
+Mean square error, in short this is basicly the mean distance between points and regression. I calculate this for range that predicted value falls between.
