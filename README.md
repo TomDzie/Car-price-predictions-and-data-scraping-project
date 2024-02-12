@@ -23,11 +23,27 @@ I implemented some machine learning techniques I learned on courses and other pr
 <a name="works"></a>  
 ## 2. How it works  
 
-1. To predict prices we need some data so the first step is collecting a lot of data.
-   I used this program to scrape car sales portal every day. Every offer was saved to SQL database. At the end there were around 200 000 records.
+1. To predict prices we need some data so the first step is collecting a lot of data.  
+   I used this program to scrape car sales portal every day. Every offer was saved to SQL database. At the end there were around 200 000 records. Collecting real data was time consuming and little bit tricky because everytime website change little bit my code must also change.
    ![image](https://github.com/TomDzie/Car-price-predictions-and-data-scraping-project/assets/117634603/3730604d-d37d-4aa1-908e-f48a89cc4521)
 
-3. 
+2. Selecting right data
+   Next step is selecting unrelated parameters for further predictions and other actions.
+   The program takes into account 9 parameters, some of them just to select the right model of car, and other to predict price
+
+3. Preprocessing, quality indicators and prediction.
+   Next selected data is preprocessed and price predistion is made
+
+4.Users perspective
+user types:  
+![image](https://github.com/TomDzie/Car-price-predictions-and-data-scraping-project/assets/117634603/6fc1d241-54c3-434c-90fe-1b5a1837c5a8)  
+
+Output:
+![image](https://github.com/TomDzie/Car-price-predictions-and-data-scraping-project/assets/117634603/9608a53c-22d5-417e-8b0a-7f9a54677cda)
+
+![image](https://github.com/TomDzie/Car-price-predictions-and-data-scraping-project/assets/117634603/cca1b8af-72cb-49ee-9558-e17e3cc47b34)
+
+
 
 
 
