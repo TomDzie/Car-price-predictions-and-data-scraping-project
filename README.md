@@ -1,7 +1,6 @@
 # Data scraping and car price prediction  
 1. [ Description. ](#desc)
 2. [ How it works ](#works)
-3. [ How it's build ](#build)
 
 <a name="desc"></a>  
 ## 1. Description  
@@ -41,7 +40,7 @@ Output:
 
 
 <a name="build"></a>  
-## 2. How it's build  
+## 2. How it's built  
 
 ![image](https://github.com/TomDzie/Car-price-predictions-and-data-scraping-project/assets/117634603/e820ef2e-29e9-4f6c-a2a1-39418276b374)  
 
